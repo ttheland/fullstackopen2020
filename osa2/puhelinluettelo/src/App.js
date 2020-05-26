@@ -1,17 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Person from './components/person'
 import Filter from './components/filter'
 import PersonForm from './components/personForm'
 
+import personService from './services/persons'
+// TODO: deal w/ handleDelete
+// TODO: sync adds to server
+const PersonList = ({ filter, persons, filteredPersons, handleDelete }) => (
+  <div className="persons">
+  {filter === ""
+  // using optional chaining (?.)
+    ? persons?.map(person => (
+        <Person
+          key={person.name}
+          person={person}
+          handleDelete={handleDelete}
+        />
+      ))
+    : filteredPersons?.map(person => (
+        <Person
+          key={person.name}
+          person={person}
+          handleDelete={handleDelete}
+        />
+      ))}
+</div>
+
+)
+
 const App = () => {
-  const [ persons, setPersons] = useState([{ name: 'A', number: '2222'},{ name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
-  const [ filteredPersons, setFilteredPersons] = useState(persons)
+  const [ filteredPersons, setFilteredPersons ] = useState(persons)
+
+  useEffect(() => {
+    personService
+     .getAll()
+     .then((initialPersons) => {
+       console.log('getall');
+       setPersons(initialPersons)
+     })
+  }, [])
+
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -38,12 +70,14 @@ const App = () => {
   const handleNumberChange = (event) => setNewNumber(event.target.value)
 
   const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-
-    setFilteredPersons(
-      persons.filter((person) => person.name.toLowerCase().includes(event.target.value.toLowerCase())),
+    setFilter(event.target.value);
+    const filtered = persons.filter((person) =>
+      // Check if name is in the phonebook
+      person.name.toLowerCase().includes(event.target.value.toLowerCase())
     )
-  }
+
+    setFilteredPersons(filtered);
+  };
 
 
   return (
@@ -62,9 +96,12 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-       {filteredPersons.map((person, i) =>
-         <Person key={i} person={person} />
-       )}
+       <PersonList
+         filter={filter}
+         persons={persons}
+         filteredPersons={filteredPersons}
+       />
+
     </div>
   )
 
