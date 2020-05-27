@@ -3,7 +3,7 @@ import Person from './components/person'
 import Filter from './components/filter'
 import PersonForm from './components/personForm'
 
-import personService from './services/persons'
+import PersonDB from './services/persons'
 
 const PersonList = ({ filter, persons, filteredPersons, handleDelete }) => (
   <div className="personList">
@@ -33,7 +33,7 @@ const App = () => {
   const [ filteredPersons, setFilteredPersons ] = useState(persons)
 
   useEffect(() => {
-    personService
+    PersonDB
      .getAll()
      .then((initialPersons) => {
        console.log('getall');
@@ -54,7 +54,7 @@ const App = () => {
 
     if (!alreadyExists) {
       // adding to db:
-      personService
+      PersonDB
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
@@ -63,7 +63,12 @@ const App = () => {
           setNewNumber('')
         })
 
-    } else { window.alert(`${newName} is already in the phonebook.`)}
+    } else {
+      const confirmUpdate = window.confirm(`${newName} is already in the phonebook. Update number?`)
+      if (confirmUpdate) {
+        handleUpdate(newName)
+      }
+    }
   }
 
   const handleNameChange = (event) => setNewName(event.target.value)
@@ -71,14 +76,43 @@ const App = () => {
   const handleNumberChange = (event) => setNewNumber(event.target.value)
 
   const handleFilterChange = (event) => {
-    setFilter(event.target.value);
+    setFilter(event.target.value)
     const filtered = persons.filter((person) =>
       // Check if name is in the phonebook
       person.name.toLowerCase().includes(event.target.value.toLowerCase())
     )
 
-    setFilteredPersons(filtered);
-  };
+    setFilteredPersons(filtered)
+  }
+
+  const handleDelete = (deletedPerson) => {
+    const confirmDelete = window.confirm(`Delete entry for ${deletedPerson.name}?`)
+    if (confirmDelete) {
+      PersonDB
+        .remove(deletedPerson.id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== deletedPerson.id))
+        })
+    }
+  }
+
+  const handleUpdate = (name) => {
+    const oldPerson = persons.find(p => p.name === name)
+    const updatedPerson = {...oldPerson, number: newNumber}
+
+    PersonDB
+      .update(updatedPerson.id, updatedPerson)
+      .then(returnedPerson => {
+        setPersons(
+          persons.map(
+            person =>
+             person.id !== oldPerson.id ? person: returnedPerson
+          )
+        )
+      })
+    setNewName('')
+    setNewNumber('')
+  }
 
 
   return (
@@ -101,11 +135,11 @@ const App = () => {
          filter={filter}
          persons={persons}
          filteredPersons={filteredPersons}
+         handleDelete={handleDelete}
        />
 
     </div>
   )
-
 }
 
 export default App
