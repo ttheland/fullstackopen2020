@@ -4,28 +4,25 @@ import Filter from './components/filter'
 import PersonForm from './components/personForm'
 
 import personService from './services/persons'
-// TODO: deal w/ handleDelete
-// TODO: sync adds to server
-const PersonList = ({ filter, persons, filteredPersons, handleDelete }) => (
-  <div className="persons">
-  {filter === ""
-  // using optional chaining (?.)
-    ? persons?.map(person => (
-        <Person
-          key={person.name}
-          person={person}
-          handleDelete={handleDelete}
-        />
-      ))
-    : filteredPersons?.map(person => (
-        <Person
-          key={person.name}
-          person={person}
-          handleDelete={handleDelete}
-        />
-      ))}
-</div>
 
+const PersonList = ({ filter, persons, filteredPersons, handleDelete }) => (
+  <div className="personList">
+    {(filter === '')
+      ? persons.map(person => (
+          <Person
+            key={person.name}
+            person={person}
+            handleDelete={handleDelete}
+          />
+        ))
+      : filteredPersons.map(person => (
+          <Person
+             key={person.name}
+             person={person}
+             handleDelete={handleDelete}
+          />
+      ))}
+  </div>
 )
 
 const App = () => {
@@ -56,13 +53,17 @@ const App = () => {
     const alreadyExists = persons.some((person) => person.name === newName)
 
     if (!alreadyExists) {
-      setPersons(persons.concat(personObject))
-      setNewName("")
-      setNewNumber("")
-      return
+      // adding to db:
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          // reset inputs
+          setNewName('')
+          setNewNumber('')
+        })
 
-    }
-    window.alert(`${newName} is already in the phonebook.`)
+    } else { window.alert(`${newName} is already in the phonebook.`)}
   }
 
   const handleNameChange = (event) => setNewName(event.target.value)
