@@ -109,7 +109,7 @@ describe('author with most blogs', () => {
     expect(listHelper.mostBlogs([])).toBe(undefined)
   })
 
-  test('in a list with one blog is the author of that blog', () => {
+  test('in a list with one blog is the author of that blog and returned in proper fashion', () => {
     const singleBlog = {
       author: 'Michael Chan',
       blogs: 1
@@ -118,7 +118,7 @@ describe('author with most blogs', () => {
     expect(listHelper.mostBlogs([listWithSeveralBlogs[0]])).toEqual(singleBlog)
   })
 
-  test('in a list with several blogs is correct', () => {
+  test('in a list with several blogs is correct ad returned in proper fashion', () => {
 
     const authorWMostBlogs = {
       author: 'Robert C. Martin',
