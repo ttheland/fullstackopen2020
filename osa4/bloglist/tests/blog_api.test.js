@@ -12,7 +12,7 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
-describe('GET: when there are initially some blogs saved', () => {
+describe('GET: when there are initially some blogs saved:', () => {
 
   test('blogs are returned as json', async () => {
     await api
@@ -35,7 +35,7 @@ describe('GET: when there are initially some blogs saved', () => {
   })
 })
 
-describe('POST: addition of new blog(s)', () => {
+describe('POST: addition of new blog(s):', () => {
   test('succeeds with valid data', async() => {
     const newBlog = {
       author: 'ttheland',
@@ -98,6 +98,39 @@ describe('POST: addition of new blog(s)', () => {
       .post('/api/blogs')
       .send(noUrlBlog)
       .expect(400)
+  })
+})
+
+describe('DELETE: deletion of blog(s):', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    const titles = blogsAtEnd.map(b => b.title)
+
+    expect(titles).not.toContain(blogToDelete.title)
+  })
+})
+
+describe('PUT: updating blog list entries:', () => {
+  test('can update likes on a blog with a valid request', async () => {
+    const updatedBlog = await helper.singleBloginDB()
+    updatedBlog.likes += 1
+
+    await api
+      .put(`/api/blogs/${updatedBlog.id}`)
+      .send(updatedBlog)
+      .expect(200)
+
+  expect( await helper.singleBloginDB()).toEqual(updatedBlog)
   })
 })
 
