@@ -6,7 +6,7 @@ const totalLikes = (blogs) => blogs.reduce((likes, blog) => (likes += blog.likes
 // 4.5*
 const favouriteBlogLikes = (blogs) => Math.max(...blogs.map(blog => blog.likes ))
 
-const favBlogObjectReturn = (blogs) => blogs.find(blog => blog.likes == favouriteBlogLikes(blogs))
+const favBlogObjectReturn = (blogs) => blogs.find(blog => blog.likes === favouriteBlogLikes(blogs))
 
 /* TODO: 4.6* define function mostBlogs, which takes array of blogs, and returns the author with the most blogs
 e.g:
@@ -26,8 +26,8 @@ const mostBlogs = (blogs) => {
     (blogCounts[blog.author])
       ? blogCounts[blog.author].blogs += 1
       : blogCounts[blog.author] = {
-         author: blog.author,
-         blogs: 1
+        author: blog.author,
+        blogs: 1
       }
   })
 
@@ -54,8 +54,8 @@ const mostLikes = (blogs) => {
     (likeCounts[blog.author])
       ? likeCounts[blog.author].likes += blog.likes
       : likeCounts[blog.author] = {
-          author: blog.author,
-          likes: blog.likes
+        author: blog.author,
+        likes: blog.likes
       }
   })
   const authors = Object.values(likeCounts)

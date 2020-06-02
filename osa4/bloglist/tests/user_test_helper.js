@@ -6,12 +6,12 @@ const initialUsers = [
   {
     name: 'Tomas Helander',
     username: 'ttheland',
-    passwordHash: '$2a$10$rFwm87DiBkeoxFlkW.oKceFGxXNd4b241dWdRHTIvro9ztz5WJbR2'
+    passwordHash: 'herp'
   },
   {
     name: 'Raju-Erkka',
     username: 'razorblade89',
-    passwordHash: '$2a$10$aijjVmZDtO.mcTV2B4arr.6BCzQMSK6qSGwuOfgv50PUM0WryaiJq'
+    passwordHash: 'derp'
   }
 ]
 const singleUserInDb = async () => {

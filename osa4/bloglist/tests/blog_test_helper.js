@@ -1,38 +1,37 @@
 const Blog = require('../models/blog')
-const mongoose = require('mongoose')
 
 const initialBlogs  = [
   {
-   _id: '5a422aa71b54a676234d17f8',
-   title: 'Go To Statement Considered Harmful',
-   author: 'Edsger W. Dijkstra',
-   url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-   likes: 5,
-   __v: 0
- },
- {
-   _id: "5ebeaa342409723338b6e711",
-   title: "Blog aus mein Hertz ",
-   author: "Super-Hans",
-   url: "www.blogausmeinhertz.de",
-   likes: 1000,
-  __v: 0
+    _id: '5a422aa71b54a676234d17f8',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    likes: 5,
+    __v: 0
   },
   {
-   _id: "5ebeaa7e2409723338b6e712",
-   title: "The Best Page in The Universe",
-   author: "Maddox",
-   url: "http://maddox.xmission.com/",
-   likes: 900000,
-   __v: 0
+    _id: '5ebeaa342409723338b6e711',
+    title: 'Blog aus mein Hertz ',
+    author: 'Super-Hans',
+    url: 'www.blogausmeinhertz.de',
+    likes: 1000,
+    __v: 0
   },
   {
-   _id: "5ebeb224368e5f21e078e886",
-   title: "The Recluist",
-   author: "Mick",
-   url: "top secret",
-   likes: 90,
-   s__v: 0
+    _id: '5ebeaa7e2409723338b6e712',
+    title: 'The Best Page in The Universe',
+    author: 'Maddox',
+    url: 'http://maddox.xmission.com/',
+    likes: 900000,
+    __v: 0
+  },
+  {
+    _id: '5ebeb224368e5f21e078e886',
+    title: 'The Recluist',
+    author: 'Mick',
+    url: 'top secret',
+    likes: 90,
+    s__v: 0
   }
 ]
 
@@ -49,7 +48,7 @@ const nonExistingId = async () => {
   return blog._id.toString()
 }
 
-const singleBloginDB = async ()  => {
+const singleBloginDb = async ()  => {
   const initialBlogs = await blogsInDb()
   return initialBlogs[0]
 }
@@ -60,5 +59,5 @@ const blogsInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, nonExistingId, singleBloginDB, blogsInDb 
+  initialBlogs, nonExistingId, singleBloginDb, blogsInDb
 }

@@ -15,6 +15,10 @@ const blogSchema =  mongoose.Schema({
     type: String,
     required: true,
     minlength: 8
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 

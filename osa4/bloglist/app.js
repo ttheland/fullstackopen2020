@@ -10,6 +10,9 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
+// to stop mongoose from complaining:
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
 
 logger.info('connecting to', config.MONGODB_URI)
 

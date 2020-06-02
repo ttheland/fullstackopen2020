@@ -31,8 +31,8 @@ blogsRouter.post('/', async (request, response) => {
       likes: body.likes === undefined ? 0 : body.likes,
       url: body.url,
       user: user._id
-   }
- )
+    }
+  )
 
   const savedBlog = await blog.save()
 
@@ -44,14 +44,16 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
+  const token = request.token
 
-  const decodedToken = jwt.verify(request.token, config.SECRET)
-  if (!request.token || !decodedToken) {
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!request || !decodedToken) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
 
   const blog = await Blog.findById(request.params.id)
-  if (blog.user.toString() !== decodedToken.id.toString() ) {
+
+  if (blog.user.toString() !== decodedToken.id.toString()) {
     return response.status(401).json({ error: 'permission denied' })
   }
 
@@ -70,7 +72,7 @@ blogsRouter.put('/:id', async (request, response) => {
   }
 
   const updatedBlog = await Blog
-    .findByIdAndUpdate(request.params.id, blog, { new: true, runValidators: true, context: 'query'})
+    .findByIdAndUpdate(request.params.id, blog, { new: true, runValidators: true, context: 'query' })
     .populate('user', { username: 1, name: 1 })
 
   if (updatedBlog) {
