@@ -8,5 +8,5 @@ Testing it using [Jest](https://jestjs.io/en/) and [supertest](https://www.npmjs
 Handling errors with [express-async-errors](https://www.npmjs.com/package/express-async-errors).
 
 
-Implementing user administration on the backend, including token-based authorization.
+Implementing user administration on the backend, including token-based authorization using [jwt](https://jwt.io/) and [bcrypt](https://www.npmjs.com/package/bcrypt).
 
