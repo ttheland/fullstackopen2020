@@ -1,0 +1,1 @@
+The 6th part delved into using React-Redux for component state management, development with redux devtools, using async actions to communicate with backend with redux-thunk, and offered a look into the legacy connect API to manage react component states in a redux store.
